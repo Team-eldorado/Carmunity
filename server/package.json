@@ -1,0 +1,15 @@
+{
+  "name": "carmunity-server",
+  "version": "0.1.0",
+  "description": "카뮤니티 매칭 서버 · 단지/차량 등록, 위임 토큰, 실행 기록, 틈 크레딧, 요청자용 모바일 웹",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test \"test/*.test.js\""
+  }
+}

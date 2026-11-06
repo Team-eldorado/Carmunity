@@ -1,0 +1,19 @@
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/app/*.iml
+android/captures/
+.kotlin/
+
+# Server
+server/node_modules/
+server/data/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

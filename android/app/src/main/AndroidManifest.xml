@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 매칭 서버 통신 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Vehicle SDK: 실제로 쓰는 도메인의 최소 권한만 선언 -->
+    <!-- 기어(Gear) · 주행거리(Odometer) · 브레이크(Brake) -->
+    <uses-permission android:name="pleos.car.permission.CAR_DRIVE" />
+    <!-- 문·트렁크(REAR) 상태 조회와 1회 개방 -->
+    <uses-permission android:name="pleos.car.permission.CAR_DOORS" />
+    <uses-permission android:name="pleos.car.permission.CONTROL_CAR_DOORS" />
+    <!-- 실내 탑승자 감지 (착석 센서) -->
+    <uses-permission android:name="pleos.car.permission.CAR_SEATS" />
+    <!-- 충전 상태 · 배터리 잔량 -->
+    <uses-permission android:name="pleos.car.permission.CAR_ENERGY" />
+    <!-- 차량 식별 (VIN) -->
+    <uses-permission android:name="pleos.car.permission.CAR_INFO" />
+    <!-- 촬영·이동 고지용 미등 점멸 -->
+    <uses-permission android:name="pleos.car.permission.CAR_LIGHTS" />
+    <uses-permission android:name="pleos.car.permission.CONTROL_CAR_LIGHTS" />
+
+    <!-- 음성 (TextToSpeech · SpeechToText) -->
+    <uses-permission android:name="pleos.car.permission.TTS_SERVICE" />
+    <uses-permission android:name="pleos.car.permission.STT_SERVICE" />
+
+    <!-- 위치 (FusedLocation, protection level: dangerous → 실행 중 요청) -->
+    <uses-permission android:name="pleos.car.permission.FUSED_LOCATION" />
+
+    <!-- 내비게이션 (NaviHelper) -->
+    <uses-permission android:name="pleos.car.permission.NAVI_ROUTE" />
+    <uses-permission android:name="pleos.car.permission.NAVI_ROUTE_SEARCH" />
+
+    <!-- android.hardware.type.automotive(required) 는 FusedLocation SDK 매니페스트에서 병합된다 -->
+
+    <application
+        android:name=".EvApp"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Carmunity"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
+            android:launchMode="singleTask">
+            <!-- 주행 중(D)에도 빈자리 안내·밀착 구역 안내 카드를 보여 준다 (운전 중 조작은 음성과 한 번 탭으로 제한) -->
+            <meta-data android:name="distractionOptimized" android:value="true" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
