@@ -32,10 +32,10 @@ android {
     signingConfigs {
         // 시연용 release APK 서명. 실제 배포 시에는 별도 키스토어로 교체한다.
         create("demo") {
-            storeFile = rootProject.file("keystore/evneighbor-demo.jks")
-            storePassword = prop("EVN_STORE_PASSWORD", "evneighbor")
-            keyAlias = "evneighbor"
-            keyPassword = prop("EVN_KEY_PASSWORD", "evneighbor")
+            storeFile = rootProject.file("keystore/carmunity-demo.jks")
+            storePassword = prop("EVN_STORE_PASSWORD", "carmunity")
+            keyAlias = "carmunity"
+            keyPassword = prop("EVN_KEY_PASSWORD", "carmunity")
         }
     }
 
@@ -43,7 +43,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            if (rootProject.file("keystore/evneighbor-demo.jks").exists()) {
+            if (rootProject.file("keystore/carmunity-demo.jks").exists()) {
                 signingConfig = signingConfigs.getByName("demo")
             }
         }

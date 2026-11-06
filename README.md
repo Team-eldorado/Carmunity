@@ -1,5 +1,14 @@
 # 카뮤니티 (Carmunity)
 
+> **차량들이 이웃을 돕는 하나의 커뮤니티** — 지하주차장에서 이웃끼리 차 기능을 조건부로 빌려 쓰는 Pleos Connect 차량용 앱
+
+| 항목 | 위치 |
+|---|---|
+| 앱 이름 · 한 줄 소개 | 이 문서 맨 위 |
+| 테스트 환경 및 필요한 설정 | [테스트 환경](#테스트-환경-및-필요한-설정) |
+| 실행 방법 | [실행 방법](#실행-방법) |
+| APK 파일 위치 | [apk/엘도라도_카뮤니티_release.apk](apk/엘도라도_카뮤니티_release.apk) |
+
 아파트 지하주차장에서 이웃끼리 차 기능을 조건부로 빌려 쓰는 차량용 앱입니다.
 차주가 "우리 단지 입주민이, 지하주차장 안에서, 앞뒤 3m까지"처럼 조건을 정해 두면,
 이중주차에 막힌 이웃이 번호판을 찍고 차 옆에서 버튼을 누르는 동안 차가 비켜줍니다.
@@ -23,7 +32,7 @@
 ## 구성
 
 ```
-source_code/
+Carmunity/
 ├─ android/   Pleos Connect 차량 앱 (Kotlin · Jetpack Compose · Pleos Connect SDK)
 ├─ server/    매칭 서버 + 요청자/차주용 모바일 웹 + 데모 콘솔 (Node.js, 외부 패키지 없음)
 ├─ tools/     시연 영상 녹화·편집 스크립트
@@ -59,6 +68,22 @@ source_code/
 
 원격 전·후진(원격 스마트 주차 보조)은 SDK에 없어 `RspaAdapter` 인터페이스를 정의하고 `SimulatedRspaAdapter`로 시연합니다.
 
+## 테스트 환경 및 필요한 설정
+
+| 구분 | 환경 |
+|---|---|
+| OS | Windows 11 (macOS · Linux도 같은 명령으로 동작) |
+| 차량 앱 | Android Studio, Pleos Connect Emulator v2.1.0 (Android 14, API 34, AAOS), JDK 17~21, Gradle 8.10.2 wrapper 포함 |
+| 서버 · 모바일 웹 | Node.js 20 이상 (외부 패키지 없음), 포트 8080 |
+| 모바일 웹 브라우저 | Chrome (PC 또는 같은 Wi-Fi의 휴대폰) |
+| 앱 설정 | 설정 탭에서 서버 `http://10.0.2.2:8080`(에뮬레이터 → PC), 차량 번호 `12가3456`, 페어링 키 `demo` |
+| 차량 신호 | Pleos Connect Virtual Console (`adb forward tcp:8088 tcp:8088` → http://127.0.0.1:8088) |
+| 선택 설정 | 음성 인식: 에뮬레이터 Extended Controls → Microphone 호스트 입력 켜기 · Playground 자격 증명이 있으면 `android/local.properties`에 `PLEOS_CLIENT_ID`, `PLEOS_CLIENT_SECRET` |
+
+- Vehicle Service가 없는 일반 Android 에뮬레이터에서는 자동으로 모의 차량으로 실행됩니다.
+- 에뮬레이터에는 BLE가 없어서 요청자 거리는 데모 콘솔(http://localhost:8080/#/demo)에서 넣습니다.
+- 원격 전·후진은 SDK에 없어 모의 어댑터(`SimulatedRspaAdapter`)로 동작합니다.
+
 ## 실행 방법
 
 ### 1) 매칭 서버 + 모바일 웹
@@ -66,9 +91,9 @@ source_code/
 Node.js 20 이상만 있으면 됩니다.
 
 ```bash
-cd source_code/server
+cd server
 npm start          # http://localhost:8080
-npm test           # 규칙 테스트 31개
+npm test           # 규칙 테스트 42개
 ```
 
 - 데모 콘솔: http://localhost:8080/#/demo
@@ -80,7 +105,7 @@ npm test           # 규칙 테스트 31개
 
 1. Android Studio에 Pleos Connect Emulator(v2.1.0, API 34)를 설치하고 AVD를 Cold boot로 만듭니다.
    [설치 가이드](https://document.pleos.ai/docs/connect/guide/getting-started/application-development/setup-connect-sdk-emulator)
-2. `source_code/android`를 Android Studio로 열고 실행합니다. (JDK 17, Gradle 8.10.2 wrapper 포함)
+2. `android` 폴더를 Android Studio로 열고 실행합니다. (JDK 17~21, Gradle 8.10.2 wrapper 포함)
    - 명령줄 빌드: `gradlew assembleDebug` / 시연용 release: `gradlew assembleRelease`
    - 단위 테스트(13개): `gradlew testDebugUnitTest` — 프로젝트 경로에 한글이 있으면 Windows 테스트 실행기가 클래스를 못 찾으니 영문 경로에서 실행하세요
 3. 앱의 **설정** 탭에서 서버 `http://10.0.2.2:8080`, 차량 번호 `12가3456`, 페어링 키 `demo`로 연결합니다.
@@ -101,8 +126,12 @@ npm test           # 규칙 테스트 31개
 5. 그랜저가 출차(P → D)하면 들어오는 아이오닉 5 차량 화면에 "B2 7열 근처에 방금 한 자리 비었어요 · 옆 차 2대가 확인했어요"가 미니맵과 음성으로 안내되고, '갈게요'를 누르면 그 칸을 잡아 두고 미니맵의 초록 칸으로 안내합니다.
 6. 안내할 빈자리가 없으면 차량 화면이 밀착 구역 빈 칸을 안내합니다. 칸 앞에서 P를 넣으면 도착으로 인식하고, 내려서 폰 버튼을 누르는 동안 칸으로 들어가는 진행률이 차량 화면에 보입니다.
 
-## 제출용 APK
+## APK 파일 위치
+
+**[apk/엘도라도_카뮤니티_release.apk](apk/엘도라도_카뮤니티_release.apk)** — 에뮬레이터에 바로 설치: `adb install -r apk/엘도라도_카뮤니티_release.apk`
+
+직접 빌드하려면
 
 `gradlew assembleRelease` → `android/app/build/outputs/apk/release/app-release.apk`
 공모전 규칙에 맞춰 `apk/엘도라도_카뮤니티_release.apk`로 복사해 저장소에 올립니다.
-(시연용 서명 키 `android/keystore/evneighbor-demo.jks`는 공개 데모 전용입니다. 실제 배포에는 별도 키를 쓰세요.)
+(시연용 서명 키 `android/keystore/carmunity-demo.jks`는 공개 데모 전용입니다. 실제 배포에는 별도 키를 쓰세요.)
