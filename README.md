@@ -74,6 +74,7 @@ Carmunity/
 |---|---|
 | OS | Windows 11 (macOS · Linux도 같은 명령으로 동작) |
 | 차량 앱 | Android Studio, Pleos Connect Emulator v2.1.0 (Android 14, API 34, AAOS), JDK 17~21, Gradle 8.10.2 wrapper 포함 |
+| 에뮬레이터 화면 규격 | 2560 × 1440, 160 dpi (가로형 차량 디스플레이) · AVD 이미지 android-34 / pleos_car_emulator / x86_64 |
 | 서버 · 모바일 웹 | Node.js 20 이상 (외부 패키지 없음), 포트 8080 |
 | 모바일 웹 브라우저 | Chrome (PC 또는 같은 Wi-Fi의 휴대폰) |
 | 앱 설정 | 설정 탭에서 서버 `http://10.0.2.2:8080`(에뮬레이터 → PC), 차량 번호 `12가3456`, 페어링 키 `demo` |
